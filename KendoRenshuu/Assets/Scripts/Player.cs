@@ -4,41 +4,56 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Keycodes")]
-    public KeyCode AttackHigh;
-    public KeyCode AttackMed;
-    public KeyCode AttackLow;
-    
     private int _facing;
-
+    
     public enum PlayerState
     {
         Idle,
         Attack,
     }
+    public PlayerState CurrentPlayerState;
     
     void Start()
     {
         _facing = 1;
+        CurrentPlayerState = PlayerState.Idle;
+
     }
 
     void Update()
     {
-        if (Input.GetAxis("Horizontal") < 0 && _facing==1)
+        switch (CurrentPlayerState)
         {
-            transform.Rotate(new Vector3(0,180,0));
+            case PlayerState.Idle:
+               _playerTurn();
+               _playerAttack();
+               break;
+            
+            case PlayerState.Attack:
+                break;
+        }
+    }
+
+
+    void _playerTurn()
+    {
+        if (Input.GetAxis("Horizontal") < 0 && _facing == 1)
+        {
+            transform.Rotate(new Vector3(0, 180, 0));
             _facing = -1;
         }
-        else if (Input.GetAxis("Horizontal") > 0 && _facing ==-1)
+        else if (Input.GetAxis("Horizontal") > 0 && _facing == -1)
         {
-            transform.Rotate(new Vector3(0,180,0));
+            transform.Rotate(new Vector3(0, 180, 0));
             _facing = 1;
         }
-
-
+    }
+    void _playerAttack()
+    {
         if (Input.GetButtonDown("Fire1"))
         {
             Debug.Log("high");
+            
         }
         else if (Input.GetButtonDown("Fire2"))
         {
