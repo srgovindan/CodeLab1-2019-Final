@@ -47,6 +47,9 @@ public class Skeleton : Enemy
     {
         //TODO: damage the player here
         Debug.Log("Hit the player");
+        _player.GetComponent<Player>().PlayerGotHit();
+        
+        
         //TODO: then call a different animation to make the skeleton disappear 
     }
 }

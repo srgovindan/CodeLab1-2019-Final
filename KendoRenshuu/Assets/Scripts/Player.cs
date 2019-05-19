@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     {
         Idle,
         Attack,
+        Hurt,
     }
     public PlayerState CurrentPlayerState;
 
@@ -41,10 +42,10 @@ public class Player : MonoBehaviour
             
             case PlayerState.Attack:
                 break;
+            case PlayerState.Hurt:
+                break;
+            
         }
-        
-        
-//        Animator.parameters.SetValue(1,"AnimationState");
     }
 
 
@@ -120,10 +121,19 @@ public class Player : MonoBehaviour
         
     }
 
+    public void PlayerGotHit()
+    {
+        CurrentPlayerState = PlayerState.Hurt;
+        Animator.SetBool("hurt",true);
+        GameManager.GM.Lives--;
+    }
+
 
     void _resetAnimationBools()
     {
+        CurrentPlayerState = PlayerState.Idle;
         Animator.SetBool("idle",true);
+        Animator.SetBool("hurt",false);
         Animator.SetBool("lowAttack",false);
         Animator.SetBool("medAttack",false);
         Animator.SetBool("highAttack",false);
