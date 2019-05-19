@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 
             Animator.SetBool("highAttack",true);
             
-            attackRay = new Ray2D(transform.position,(Vector2.up + Vector2.right)*_facing*midRange);
+            attackRay = new Ray2D(transform.position,(Vector2.up + Vector2.right)*_facing*highRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, highRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
             
             Animator.SetBool("lowAttack",true);
             
-            attackRay = new Ray2D(transform.position,(Vector2.down + Vector2.right)*_facing*midRange);
+            attackRay = new Ray2D(transform.position,(Vector2.down + Vector2.right)*_facing*lowRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, lowRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)

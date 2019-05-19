@@ -9,8 +9,7 @@ public class GameManager : MonoBehaviour
     
     public Text ScoreTextUI;
 
-    private int score;
-
+    private int score; //score property sets ui whenever score changes
     public int Score
     {
         get
