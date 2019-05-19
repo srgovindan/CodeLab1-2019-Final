@@ -17,7 +17,9 @@ public class Player : MonoBehaviour
         
     private int enemyLayerMask = 1 << 9; //layerMask should only hit enemies layer
     //attack ranges
-    private float midRange = .2f;
+    private float highRange = .1f;
+    private float midRange = .1f;
+    private float lowRange = .1f;
     
     void Start()
     {
@@ -73,7 +75,7 @@ public class Player : MonoBehaviour
             Animator.SetBool("highAttack",true);
             
             attackRay = new Ray2D(transform.position,(Vector2.up + Vector2.right)*_facing*midRange);
-            attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, midRange, enemyLayerMask);
+            attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, highRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
             {
@@ -104,7 +106,7 @@ public class Player : MonoBehaviour
             Animator.SetBool("lowAttack",true);
             
             attackRay = new Ray2D(transform.position,(Vector2.down + Vector2.right)*_facing*midRange);
-            attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, midRange, enemyLayerMask);
+            attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, lowRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
             {
