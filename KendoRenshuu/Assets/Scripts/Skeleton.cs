@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skeleton : MonoBehaviour
+public class Skeleton : Enemy
 {
     private float _moveSpeed = .01f;
     private GameObject _player;
-    
+
+
     void Start()
     {
         _player = GameObject.Find("Player");
@@ -25,4 +26,6 @@ public class Skeleton : MonoBehaviour
         
         
     }
+
+  
 }
