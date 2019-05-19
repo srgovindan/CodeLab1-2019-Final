@@ -12,14 +12,14 @@ public class Player : MonoBehaviour
         Attack,
         Hurt,
     }
-    public PlayerState CurrentPlayerState;
+    private PlayerState CurrentPlayerState;
 
     private Animator Animator;
         
     private int enemyLayerMask = 1 << 9; //layerMask should only hit enemies layer
     //attack ranges
     private float highRange = .1f;
-    private float midRange = .1f;
+    private float midRange = .15f;
     private float lowRange = .1f;
     
     void Start()
@@ -43,8 +43,7 @@ public class Player : MonoBehaviour
             case PlayerState.Attack:
                 break;
             case PlayerState.Hurt:
-                break;
-            
+                break;  
         }
     }
 
@@ -75,7 +74,7 @@ public class Player : MonoBehaviour
 
             Animator.SetBool("highAttack",true);
             
-            attackRay = new Ray2D(transform.position,(Vector2.up + Vector2.right)*_facing*highRange);
+            attackRay = new Ray2D(transform.position,(Vector2.up + Vector2.right*_facing)*highRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, highRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
@@ -96,8 +95,6 @@ public class Player : MonoBehaviour
             {
               Debug.Log("Hit Enemy");
               Destroy(attackHit.transform.gameObject);
-                  //TODO: call a enemy destroyed function on the enemy
-              
             }
         }
         else if (Input.GetButtonDown("Fire3"))
@@ -106,7 +103,7 @@ public class Player : MonoBehaviour
             
             Animator.SetBool("lowAttack",true);
             
-            attackRay = new Ray2D(transform.position,(Vector2.down + Vector2.right)*_facing*lowRange);
+            attackRay = new Ray2D(transform.position,(Vector2.down + Vector2.right*_facing)*lowRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, lowRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)

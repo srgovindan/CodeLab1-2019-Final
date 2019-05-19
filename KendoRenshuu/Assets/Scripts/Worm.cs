@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skeleton : Enemy
+public class Worm : Enemy
 {
    
     private GameObject _player;
@@ -49,6 +49,7 @@ public class Skeleton : Enemy
         Debug.Log("Hit the player");
         _player.GetComponent<Player>().PlayerGotHit();
         EnemyMoveSpeed = 0.02f;
+
 
         //TODO: then call a different animation to make the skeleton disappear 
     }

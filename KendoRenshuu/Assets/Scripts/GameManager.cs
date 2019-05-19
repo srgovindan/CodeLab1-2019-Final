@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
     private float _timer;
     public float SpawnTime;
 
+    public int NumActiveEnemies;
+
     [Header("Spawners")] 
     public GameObject HighSpawnL;
     public GameObject MedSpawnL;
@@ -86,17 +88,18 @@ public class GameManager : MonoBehaviour
         _timer += Time.deltaTime;
         if (_timer > SpawnTime)
         {
-            //TODO: if the list is empty, level over
+  
+            //all the enemies in the level have spawned
             if (_spawnList.Count == 0)
             {
-                Debug.Log("defeated all enemies in level");
+                //TODO: this means all the enemies have spawned
             }
             else
             {
                 SpawnEnemy(_spawnList[0]); //spawn a thing 
+                NumActiveEnemies++; //count the number of active enemies
                 _spawnList.RemoveAt(0); //remove it from the list
                 _timer = 0; //reset the timer
-                SpawnTime -= .1f; //reduce next spawn time
             }
         }
        
@@ -125,11 +128,24 @@ public class GameManager : MonoBehaviour
         switch (enemyType)
         {
             case '1'://low
-                
+                enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Worm"));
+                if (Random.Range(0, 2) < 1) //random spawn on L or R side
+                    enemy.transform.position = LowSpawnL.transform.position;
+                else
+                {
+                    enemy.transform.position = LowSpawnR.transform.position;
+                    enemy.transform.eulerAngles += new Vector3 (transform.eulerAngles.x, 180);
+                }
                 break;
             case '2'://med
                 enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Skeleton"));
-                enemy.transform.position = MedSpawnL.transform.position;
+                if (Random.Range(0, 2) < 1) //random spawn on L or R side
+                    enemy.transform.position = MedSpawnL.transform.position;
+                else
+                {
+                    enemy.transform.position = MedSpawnR.transform.position;
+                    enemy.transform.eulerAngles += new Vector3 (transform.eulerAngles.x, 180);
+                }
                 break;
             case '3'://high
                 
