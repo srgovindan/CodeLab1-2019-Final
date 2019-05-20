@@ -9,15 +9,21 @@ public class Worm : Enemy
    
     void Update()
     {
-        _distToPlayer = Vector2.Distance(transform.position, _player.transform.position); //calculate dist to player
-        if (_distToPlayer > attackingRange)
+        switch (CurrentEnemyState)
         {
-            MoveTowardsPlayer();
-        }
-        else
-        {
-            AttackPlayer();
-        }
+            case EnemyState.Move:
+                _distToPlayer = Vector2.Distance(transform.position, _player.transform.position); //calculate dist to player
+                if (_distToPlayer > attackingRange)
+                    MoveTowardsPlayer();
+                else
+                    CurrentEnemyState = EnemyState.Attack;
+                break;
+            case EnemyState.Attack:
+                AttackPlayer();
+                break;
+            case EnemyState.Hurt:
+                break;
+        }  
     }
 
     void MoveTowardsPlayer()
@@ -26,7 +32,7 @@ public class Worm : Enemy
     }
 
     //if the player hits the worm, the worm is destroyed, score increases, yada yada
-    public void DestroyEnemy()
+    public void DestroyEnemy() //called from animator
     {
         GameManager.GM.Score++;
         GameManager.GM.NumActiveEnemies--;
@@ -40,7 +46,7 @@ public class Worm : Enemy
     }
     
     //if the enemy hits the player, they deactivate after attack 
-    public void WormHitPlayer()
+    public void WormHitPlayer() //called from animator
     {
         GameManager.GM.NumActiveEnemies--;
         if (GameManager.GM.SpawnList.Count == 0)

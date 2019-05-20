@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         {
             lives = value;
             //if lives drops below 0, call game over function
-            if (lives<1)
+            if (lives < 0)
                 GameOver();
             //else update the lives ui
             else  

@@ -14,13 +14,13 @@ public class Enemy : MonoBehaviour
     private Animator Animator;
     
     //VARS
-    enum EnemyState
+    public enum EnemyState
     {
         Move,
         Attack,
         Hurt,
     }
-    private EnemyState CurrentEnemyState;
+    public EnemyState CurrentEnemyState;
     
     void Start()
     {
@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     public void AttackPlayer()
     {
         Animator.SetBool("attacking",true);
+        CurrentEnemyState = EnemyState.Attack;
     }
     
     void DamagePlayer() //called from the animator
@@ -45,6 +46,7 @@ public class Enemy : MonoBehaviour
     public void EnemyHit()
     {
         Animator.SetBool("defeated",true);
+        CurrentEnemyState = EnemyState.Hurt;
     }
 
 }

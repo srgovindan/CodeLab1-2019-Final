@@ -1382,6 +1382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 817480332061699887, guid: d19eb211ba6014284a93ba3ca740ff38,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 817480332061699883, guid: d19eb211ba6014284a93ba3ca740ff38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1450,6 +1455,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Worm
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452175870319653899, guid: e529c5fc332a347a59b4208d258e8a86,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2452175870319653896, guid: e529c5fc332a347a59b4208d258e8a86,
         type: 3}

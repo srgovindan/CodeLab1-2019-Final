@@ -31,6 +31,7 @@ public class ObjectPool : MonoBehaviour
     {
         SkeletonPool.Add(skeleton);
         skeleton.SetActive(false);
+        skeleton.GetComponent<Enemy>().CurrentEnemyState = Enemy.EnemyState.Move; //reset the enemy state to move when it is reused
     }
 
     public GameObject GetSkeleton()
@@ -54,6 +55,7 @@ public class ObjectPool : MonoBehaviour
     {
         WormPool.Add(worm);
         worm.SetActive(false);
+        worm.GetComponent<Enemy>().CurrentEnemyState = Enemy.EnemyState.Move; //reset the enemy state to move when it is reused
     }
 
     public GameObject GetWorm()
