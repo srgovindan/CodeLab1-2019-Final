@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-
     public static ObjectPool Pool;
-    
+
     public List<GameObject> SkeletonPool;
     public List<GameObject> WormPool;
 
 
-    void Start()
+    private void Start()
     {
         //SINGLETON
         if (Pool == null)
@@ -20,7 +18,9 @@ public class ObjectPool : MonoBehaviour
             DontDestroyOnLoad(Pool);
         }
         else
+        {
             Destroy(gameObject);
+        }
 
         SkeletonPool = new List<GameObject>();
         WormPool = new List<GameObject>();
@@ -31,7 +31,8 @@ public class ObjectPool : MonoBehaviour
     {
         SkeletonPool.Add(skeleton);
         skeleton.SetActive(false);
-        skeleton.GetComponent<Enemy>().CurrentEnemyState = Enemy.EnemyState.Move; //reset the enemy state to move when it is reused
+        skeleton.GetComponent<Enemy>().CurrentEnemyState =
+            Enemy.EnemyState.Move; //reset the enemy state to move when it is reused
     }
 
     public GameObject GetSkeleton()
@@ -48,14 +49,16 @@ public class ObjectPool : MonoBehaviour
         {
             result = Instantiate(Resources.Load<GameObject>("Prefabs/Skeleton"));
         }
+
         return result;
     }
-    
+
     public void AddWorm(GameObject worm)
     {
         WormPool.Add(worm);
         worm.SetActive(false);
-        worm.GetComponent<Enemy>().CurrentEnemyState = Enemy.EnemyState.Move; //reset the enemy state to move when it is reused
+        worm.GetComponent<Enemy>().CurrentEnemyState =
+            Enemy.EnemyState.Move; //reset the enemy state to move when it is reused
     }
 
     public GameObject GetWorm()
@@ -72,6 +75,7 @@ public class ObjectPool : MonoBehaviour
         {
             result = Instantiate(Resources.Load<GameObject>("Prefabs/Worm"));
         }
+
         return result;
     }
 }

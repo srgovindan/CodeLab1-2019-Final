@@ -1,54 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private int _facing;
-    
     public enum PlayerState
     {
         Idle,
         Attack,
-        Hurt,
+        Hurt
     }
+    
     public PlayerState CurrentPlayerState;
 
+    private int _facing;
+    
     private Animator Animator;
-        
-    private int enemyLayerMask = 1 << 9; //layerMask should only hit enemies layer
+    
+    private readonly int enemyLayerMask = 1 << 9; //layerMask should only hit enemies layer
+
     //attack ranges
     public float highRange = .1f;
-    public float midRange = .15f;
     public float lowRange = .1f;
-    
-    void Start()
+    public float midRange = .15f;
+
+    private void Start()
     {
         _facing = 1;
         CurrentPlayerState = PlayerState.Idle;
-        
         Animator = GetComponent<Animator>();
-        
     }
 
-    void Update()
+    private void Update()
     {
         switch (CurrentPlayerState)
         {
             case PlayerState.Idle:
-               _playerTurn();
-               _playerAttack();
-               break;
-            
+                _playerTurn();
+                _playerAttack();
+                break;
+
             case PlayerState.Attack:
                 break;
             case PlayerState.Hurt:
-                break;  
+                break;
         }
     }
 
 
-    void _playerTurn()
+    private void _playerTurn()
     {
         if (Input.GetAxis("Horizontal") < 0 && _facing == 1)
         {
@@ -61,67 +59,69 @@ public class Player : MonoBehaviour
             _facing = 1;
         }
     }
-    void _playerAttack()
+
+    private void _playerAttack()
     {
         CurrentPlayerState = PlayerState.Attack; //set player state to attack
-        Ray2D attackRay = new Ray2D(); //create an attack ray
-        RaycastHit2D attackHit = new RaycastHit2D(); //create a ray2d hit info obj to store hit info
-        
-        
+        var attackRay = new Ray2D(); //create an attack ray
+        var attackHit = new RaycastHit2D(); //create a ray2d hit info obj to store hit info
+
+
         if (Input.GetButtonDown("Fire1"))
         {
             Debug.Log("high");
-
-            Animator.SetBool("highAttack",true);
             
-            attackRay = new Ray2D(transform.position,(Vector2.up + Vector2.right*_facing)*highRange);
+            Animator.SetBool("highAttack", true);
+
+            attackRay = new Ray2D(transform.position, (Vector2.up + Vector2.right * _facing) * highRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, highRange, enemyLayerMask);
-            Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
+            Debug.DrawRay(attackRay.origin, attackRay.direction, Color.yellow);
             if (attackHit)
                 attackHit.transform.gameObject.GetComponent<Enemy>().EnemyHit();
         }
         else if (Input.GetButtonDown("Fire2"))
         {
             Debug.Log("med");
-            
-            Animator.SetBool("medAttack",true);
-            
-            attackRay = new Ray2D(transform.position,Vector2.right*_facing*midRange);
+
+            Animator.SetBool("medAttack", true);
+
+            attackRay = new Ray2D(transform.position, Vector2.right * _facing * midRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, midRange, enemyLayerMask);
-            Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
+            Debug.DrawRay(attackRay.origin, attackRay.direction, Color.yellow);
             if (attackHit)
                 attackHit.transform.gameObject.GetComponent<Enemy>().EnemyHit();
         }
         else if (Input.GetButtonDown("Fire3"))
         {
             Debug.Log("low");
-            
-            Animator.SetBool("lowAttack",true);
-            
-            attackRay = new Ray2D(transform.position,(Vector2.down + Vector2.right*_facing)*lowRange);
+
+            Animator.SetBool("lowAttack", true);
+
+            attackRay = new Ray2D(transform.position, (Vector2.down + Vector2.right * _facing) * lowRange);
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, lowRange, enemyLayerMask);
-            Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
+            Debug.DrawRay(attackRay.origin, attackRay.direction, Color.yellow);
             if (attackHit)
                 attackHit.transform.gameObject.GetComponent<Enemy>().EnemyHit();
         }
+
         CurrentPlayerState = PlayerState.Idle; //set player state back to idle 
     }
 
     public void PlayerGotHit()
     {
         CurrentPlayerState = PlayerState.Hurt;
-        Animator.SetBool("hurt",true);
+        Animator.SetBool("hurt", true);
         GameManager.GM.Lives--;
     }
 
 
-    void _resetAnimationBools()
+    private void _resetAnimationBools()
     {
         CurrentPlayerState = PlayerState.Idle;
-        Animator.SetBool("idle",true);
-        Animator.SetBool("hurt",false);
-        Animator.SetBool("lowAttack",false);
-        Animator.SetBool("medAttack",false);
-        Animator.SetBool("highAttack",false);
+        Animator.SetBool("idle", true);
+        Animator.SetBool("hurt", false);
+        Animator.SetBool("lowAttack", false);
+        Animator.SetBool("medAttack", false);
+        Animator.SetBool("highAttack", false);
     }
 }
