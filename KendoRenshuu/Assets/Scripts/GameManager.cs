@@ -16,13 +16,10 @@ public class GameManager : MonoBehaviour
     public Text LivesTextUI;
     public Text HighScoreUI;
     public GameObject GameOverTextUI;
-
-    
     
     //SCORE & LIVES 
     private const string PLAYER_PREFS_HIGHSCORE = "highScore";
     private int highScore;
-
     public int HighScore
     {
         get
@@ -39,7 +36,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     private int score; //score property sets ui whenever score changes
     public int Score
     {
@@ -93,8 +89,6 @@ public class GameManager : MonoBehaviour
     public GameObject MedSpawnR;
     public GameObject LowSpawnR;
 
-   
-    
     void Start()
     {
         //SINGLETON
@@ -125,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //SPAWN TIMER: Spawns an enemy from the Spawn List when the Timer reaches the Spawn Time
         _timer += Time.deltaTime;
         if (_timer > SpawnTime)
         {   
@@ -135,7 +130,7 @@ public class GameManager : MonoBehaviour
                 _timer = 0; //reset the timer
             }
         }
-        Debug.Log("Active Enemies: "+NumActiveEnemies);
+        //Debug.Log("Active Enemies: " + NumActiveEnemies);
     }
 
     void LoadSpawnListFromLevelFile(int levelIndex)
@@ -191,13 +186,12 @@ public class GameManager : MonoBehaviour
     void LoadLevel(int i)
     {
         LoadSpawnListFromLevelFile(i);
-        //add enemies to the level spawn layout
+        //add enemies to the level spawn layout to create a different level set for each computer
         for (int j = 0; j < Mathf.RoundToInt(LevelInd/2); j++)
         {
             levelSpawnLayout = levelSpawnLayout + Random.Range(0, 4);
         }
     }
-
 
     public void LevelCleared()
     {
@@ -215,12 +209,34 @@ public class GameManager : MonoBehaviour
         GameOverTextUI.SetActive(true);
         //change player state to hurt
         _player.GetComponent<Player>().CurrentPlayerState = Player.PlayerState.Hurt;
-         ResetGame();   
+        if (Input.anyKey)
+            ResetGame();   
     }
 
     public void ResetGame()
     {
-        
+        //DESTROY ALL ENEMY GAME OBJECTS
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Debug.Log(enemies);
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy);
+        }     
+        ObjectPool.Pool.WormPool.Clear();
+        ObjectPool.Pool.SkeletonPool.Clear();
+        //RESET OR REMOVE
+        GameOverTextUI.SetActive(false); //turn off game over ui
+        StopAllCoroutines(); //stops all delayed level loads
+        NumActiveEnemies = 0;
+        _player.GetComponent<Player>().CurrentPlayerState = Player.PlayerState.Idle; //reset player state
+        //LOAD STUFF AGAIN
+        Enemy.EnemyMoveSpeed = .01f; //reset enemy move speed
+        LevelInd = 1; //reset level ind
+        Lives = 3;
+        Score = 0;
+        _timer = 0;
+        SpawnList = new List<char>(); //init the list
+        LoadLevel(LevelInd); //load first level
     }
     
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 212147525}
   m_Layer: 9
   m_Name: Worm
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,6 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
+  CurrentEnemyState: 0
   attackingRange: 0.1
 --- !u!61 &212147525
 BoxCollider2D:
