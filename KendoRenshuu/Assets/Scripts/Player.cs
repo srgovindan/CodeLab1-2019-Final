@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             Debug.Log("high");
+            AudioManager.AM.PlayClipName("High");
             
             Animator.SetBool("highAttack", true);
 
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
         else if (Input.GetButtonDown("Fire2"))
         {
             Debug.Log("med");
+            AudioManager.AM.PlayClipName("Med");
 
             Animator.SetBool("medAttack", true);
 
@@ -94,6 +96,7 @@ public class Player : MonoBehaviour
         else if (Input.GetButtonDown("Fire3"))
         {
             Debug.Log("low");
+            AudioManager.AM.PlayClipName("Low");
 
             Animator.SetBool("lowAttack", true);
 

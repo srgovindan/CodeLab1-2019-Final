@@ -16,13 +16,27 @@ public class GameManager : MonoBehaviour
     //MISC: TIMER, LEVEL IND, NUM OF ACTIVE ENEMIES
     private float _timer;
     public GameObject GameOverTextUI;
+    public GameObject WaveNumberUI;
     private int highScore;
     public Text HighScoreUI;
 
     [Header("Spawners")] public GameObject HighSpawnL;
 
     public GameObject HighSpawnR;
-    public int LevelInd;
+    private int levelInd;
+    public int LevelInd
+    {
+        get
+        {
+            return levelInd;
+            
+        }
+        set
+        {
+            levelInd = value;
+            StartCoroutine(UpdateWaveNumberUI());
+        }
+    }
 
     //SPAWN VARS
     private string levelSpawnLayout = "121"; //inital level spawn layout
@@ -123,6 +137,16 @@ public class GameManager : MonoBehaviour
             }
 
         //Debug.Log("Active Enemies: " + NumActiveEnemies);
+    }
+
+    IEnumerator UpdateWaveNumberUI()
+    {
+        WaveNumberUI.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        WaveNumberUI.GetComponent<Text>().text = "WAVE " + levelInd;
+        yield return new WaitForSeconds(2f);
+        WaveNumberUI.SetActive(false);
+        
     }
 
     private void LoadSpawnListFromLevelFile(int levelIndex)

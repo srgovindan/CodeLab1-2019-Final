@@ -33,6 +33,7 @@ public class Worm : Enemy
     //if the player hits the worm, the worm is destroyed, score increases, yada yada
     public void DestroyEnemy() //called from animator
     {
+        AudioManager.AM.PlayClipName("WormDead"); //worm destroyed sfx
         GameManager.GM.Score++;
         GameManager.GM.NumActiveEnemies--;
         EnemyMoveSpeed += 0.0002f;
@@ -48,6 +49,7 @@ public class Worm : Enemy
     //if the enemy hits the player, they deactivate after attack 
     public void WormHitPlayer() //called from animator
     {
+        AudioManager.AM.PlayClipName("WormHit"); //worm hit sfx
         GameManager.GM.NumActiveEnemies--;
         if (GameManager.GM.SpawnList.Count == 0)
         {

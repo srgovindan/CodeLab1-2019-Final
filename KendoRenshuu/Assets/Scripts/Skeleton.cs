@@ -33,6 +33,7 @@ public class Skeleton : Enemy
     //if the player hits the skel, the skel is destroyed, score increases, yada yada
     public void DestroyEnemy() //called from animator
     {
+        AudioManager.AM.PlayClipName("SkeletonDead"); //skeleton destroyed sfx
         GameManager.GM.Score++;
         GameManager.GM.NumActiveEnemies--;
         EnemyMoveSpeed += 0.0002f;
@@ -48,6 +49,7 @@ public class Skeleton : Enemy
     //if the enemy hits the player, they deactivate after attack 
     public void SkeletonHitPlayer() //called from animator
     {
+        AudioManager.AM.PlayClipName("SkeletonHit"); //skeleton hit sfx
         GameManager.GM.NumActiveEnemies--;
         if (GameManager.GM.SpawnList.Count == 0)
         {
