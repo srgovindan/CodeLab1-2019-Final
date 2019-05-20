@@ -14,9 +14,32 @@ public class GameManager : MonoBehaviour
     //UI ELEMENTS
     public Text ScoreTextUI;
     public Text LivesTextUI;
+    public Text HighScoreUI;
     public GameObject GameOverTextUI;
 
+    
+    
     //SCORE & LIVES 
+    private const string PLAYER_PREFS_HIGHSCORE = "highScore";
+    private int highScore;
+
+    public int HighScore
+    {
+        get
+        {
+            return highScore;
+        }
+        set
+        {
+            if (value > highScore) //if the value is greater than the high score
+            {
+                highScore = value; //make that the new high score
+                HighScoreUI.text = "High Score: " + highScore; //update the high score UI
+                PlayerPrefs.SetInt(PLAYER_PREFS_HIGHSCORE,HighScore); //save the new high score to player prefs
+            }
+        }
+    }
+
     private int score; //score property sets ui whenever score changes
     public int Score
     {
@@ -29,6 +52,7 @@ public class GameManager : MonoBehaviour
         {
             score = value;
             ScoreTextUI.text = "Score: " + value;
+            HighScore = score;
         }
     }
     private int lives; //lives property calls game over when it falls to 0 
@@ -93,6 +117,7 @@ public class GameManager : MonoBehaviour
         Score = 0;
         _timer = 0;
         SpawnList = new List<char>(); //init the list
+        HighScore = PlayerPrefs.GetInt(PLAYER_PREFS_HIGHSCORE,10); //load the high score from player prefs
         
         //load the first level
         LoadLevel(LevelInd);
@@ -190,11 +215,12 @@ public class GameManager : MonoBehaviour
         GameOverTextUI.SetActive(true);
         //change player state to hurt
         _player.GetComponent<Player>().CurrentPlayerState = Player.PlayerState.Hurt;
+         ResetGame();   
+    }
+
+    public void ResetGame()
+    {
         
-        if (Input.GetKey(KeyCode.R))
-        {
-            SceneManager.LoadScene(0);
-        }
     }
     
 }
