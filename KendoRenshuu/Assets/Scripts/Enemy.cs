@@ -4,26 +4,42 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {   
+    //PLAYER REF
     public GameObject _player;
+    
+    //GLOBAL ENEMY SPEED
     public static float EnemyMoveSpeed = .01f;
     
+    //PRIVATE REFS
     private Animator Animator;
-
+    
+    //VARS
+    enum EnemyState
+    {
+        Move,
+        Attack,
+        Hurt,
+    }
+    private EnemyState CurrentEnemyState;
+    
     void Start()
     {
         _player = GameObject.Find("Player");
         Animator = GetComponent<Animator>();
+        CurrentEnemyState = EnemyState.Move; //default enemy state to move
     }
-//    void OnDestroy()
-//    {
-//        GameManager.GM.Score++;
-//        GameManager.GM.NumActiveEnemies--;
-//        EnemyMoveSpeed += 0.001f;
-//    }
     
     public void AttackPlayer()
     {
         Animator.SetBool("attacking",true);
+    }
+    
+    void DamagePlayer() //called from the animator
+    {
+        Debug.Log("Hit the player");
+        _player.GetComponent<Player>().PlayerGotHit(); 
+        EnemyMoveSpeed = 0.01f; //reset the enemy movement speed
+        GameManager.GM.NumActiveEnemies--; //reduce the num of active enemies
     }
     
     public void EnemyHit()
@@ -31,10 +47,4 @@ public class Enemy : MonoBehaviour
         Animator.SetBool("defeated",true);
     }
 
-    public virtual void DestroyEnemy()
-    {
-        GameManager.GM.Score++;
-        GameManager.GM.NumActiveEnemies--;
-        EnemyMoveSpeed += 0.001f;
-    }
 }

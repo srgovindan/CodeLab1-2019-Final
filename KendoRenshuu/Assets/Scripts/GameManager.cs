@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    //INSTANCE & PLAYER REFERENCE
     public static GameManager GM;
+    private GameObject _player;
     
+    //UI ELEMENTS
     public Text ScoreTextUI;
     public Text LivesTextUI;
+    public GameObject GameOverTextUI;
 
+    //SCORE & LIVES 
     private int score; //score property sets ui whenever score changes
     public int Score
     {
@@ -25,9 +31,7 @@ public class GameManager : MonoBehaviour
             ScoreTextUI.text = "Score: " + value;
         }
     }
-
-    private int lives;
-
+    private int lives; //lives property calls game over when it falls to 0 
     public int Lives
     {
         get
@@ -38,18 +42,25 @@ public class GameManager : MonoBehaviour
         set
         {
             lives = value;
-            LivesTextUI.text = "Lives: " + value;
+            //if lives drops below 0, call game over function
+            if (lives<1)
+                GameOver();
+            //else update the lives ui
+            else  
+                LivesTextUI.text = "Lives: " + value;
         }
     }
 
-
-    private List<char> _spawnList;
-    private int _levelInd;
+   //MISC: TIMER, LEVEL IND, NUM OF ACTIVE ENEMIES
     private float _timer;
-    public float SpawnTime;
-
+    public int LevelInd;
+    [HideInInspector]
     public int NumActiveEnemies;
-
+    
+    //SPAWN VARS
+    private string levelSpawnLayout = "121"; //inital level spawn layout
+    public List<char> SpawnList;
+    public float SpawnTime;
     [Header("Spawners")] 
     public GameObject HighSpawnL;
     public GameObject MedSpawnL;
@@ -57,7 +68,8 @@ public class GameManager : MonoBehaviour
     public GameObject HighSpawnR;
     public GameObject MedSpawnR;
     public GameObject LowSpawnR;
-    
+
+   
     
     void Start()
     {
@@ -72,37 +84,33 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
+        //get player reference
+        _player = GameObject.FindWithTag("Player");
+        
         //init stuff
-        _levelInd = 1;
+        LevelInd = 1;
         Lives = 3;
         Score = 0;
-
         _timer = 0;
-        _spawnList = new List<char>(); //init the list
+        SpawnList = new List<char>(); //init the list
         
-        LoadLevel(_levelInd);
+        //load the first level
+        LoadLevel(LevelInd);
     }
 
     void Update()
     {
         _timer += Time.deltaTime;
         if (_timer > SpawnTime)
-        {
-  
-            //all the enemies in the level have spawned
-            if (_spawnList.Count == 0)
+        {   
+            if (SpawnList.Count != 0) //if the spawn list is not empty, spawn a thing                        
             {
-                //TODO: this means all the enemies have spawned
-            }
-            else
-            {
-                SpawnEnemy(_spawnList[0]); //spawn a thing 
-                NumActiveEnemies++; //count the number of active enemies
-                _spawnList.RemoveAt(0); //remove it from the list
+                SpawnEnemy(SpawnList[0]); //spawn a thing
+                SpawnList.RemoveAt(0); //remove it from the list
                 _timer = 0; //reset the timer
             }
         }
-       
+        Debug.Log("Active Enemies: "+NumActiveEnemies);
     }
 
     void LoadSpawnListFromLevelFile(int levelIndex)
@@ -110,7 +118,7 @@ public class GameManager : MonoBehaviour
         string filePath = Application.dataPath + "/Resources" + "/Levels" + "/level" + levelIndex + ".txt";
         if (!File.Exists(filePath))
         {
-            File.WriteAllText(filePath, "123123");
+            File.WriteAllText(filePath, levelSpawnLayout);
         }
         string spawnListText = File.ReadAllText(filePath);
         Debug.Log(spawnListText);
@@ -118,12 +126,13 @@ public class GameManager : MonoBehaviour
         //save the spawn chars from the text file to the SpawnList list 
         for (int i = 0; i < spawnListText.Length; i++)
         {
-            _spawnList.Add(spawnListText[i]);
+            SpawnList.Add(spawnListText[i]);
         }
     }
-
+    
     void SpawnEnemy(char enemyType)
     {
+        NumActiveEnemies++; //count the number of active enemies
         GameObject enemy;
         switch (enemyType)
         {
@@ -153,12 +162,39 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    
-
 
     void LoadLevel(int i)
     {
         LoadSpawnListFromLevelFile(i);
+        //add enemies to the level spawn layout
+        for (int j = 0; j < Mathf.RoundToInt(LevelInd/2); j++)
+        {
+            levelSpawnLayout = levelSpawnLayout + Random.Range(0, 4);
+        }
+    }
+
+
+    public void LevelCleared()
+    {
+        StartCoroutine(DelayedLevelLoad(LevelInd,3f));
+    }
+    
+    public IEnumerator DelayedLevelLoad(int i, float t)
+    {
+     yield return new WaitForSeconds(t);
+     LoadLevel(i);
+    }
+
+    public void GameOver()
+    {
+        GameOverTextUI.SetActive(true);
+        //change player state to hurt
+        _player.GetComponent<Player>().CurrentPlayerState = Player.PlayerState.Hurt;
+        
+        if (Input.GetKey(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
     
 }

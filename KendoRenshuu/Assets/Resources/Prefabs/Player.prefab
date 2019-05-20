@@ -114,6 +114,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentPlayerState: 0
+  highRange: 0.2
+  midRange: 0.3
+  lowRange: 0.2
 --- !u!61 &8089013994077582986
 BoxCollider2D:
   m_ObjectHideFlags: 0

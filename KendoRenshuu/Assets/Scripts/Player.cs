@@ -12,15 +12,15 @@ public class Player : MonoBehaviour
         Attack,
         Hurt,
     }
-    private PlayerState CurrentPlayerState;
+    public PlayerState CurrentPlayerState;
 
     private Animator Animator;
         
     private int enemyLayerMask = 1 << 9; //layerMask should only hit enemies layer
     //attack ranges
-    private float highRange = .1f;
-    private float midRange = .15f;
-    private float lowRange = .1f;
+    public float highRange = .1f;
+    public float midRange = .15f;
+    public float lowRange = .1f;
     
     void Start()
     {
