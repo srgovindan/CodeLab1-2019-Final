@@ -188,6 +188,7 @@ MonoBehaviour:
   - WormDead
   - SkeletonHit
   - SkeletonDead
+  - WaveComplete
   AudioClips:
   - {fileID: 8300000, guid: f70156da515ff4ad4a62ca0527982a28, type: 3}
   - {fileID: 8300000, guid: 6e02882c81de84277bcc4d0494cc7ccd, type: 3}
@@ -196,6 +197,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 61af02af6f6d443dbbe3d39611f02041, type: 3}
   - {fileID: 8300000, guid: 49d055e17ac114f029e61f3f22c753a9, type: 3}
   - {fileID: 8300000, guid: 914fea918f92e4ad28e3c3923da07e17, type: 3}
+  - {fileID: 8300000, guid: 0431d33a1fc8944d4bec2b76785b7776, type: 3}
 --- !u!4 &185323574
 Transform:
   m_ObjectHideFlags: 0

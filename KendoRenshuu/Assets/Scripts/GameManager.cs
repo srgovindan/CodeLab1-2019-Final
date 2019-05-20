@@ -143,6 +143,7 @@ public class GameManager : MonoBehaviour
     {
         WaveNumberUI.SetActive(true);
         yield return new WaitForSeconds(0.5f);
+        AudioManager.AM.PlayClipName("WaveComplete");
         WaveNumberUI.GetComponent<Text>().text = "WAVE " + levelInd;
         yield return new WaitForSeconds(2f);
         WaveNumberUI.SetActive(false);
@@ -208,7 +209,7 @@ public class GameManager : MonoBehaviour
 
     public void LevelCleared()
     {
-        StartCoroutine(DelayedLevelLoad(LevelInd, 3f));
+        StartCoroutine(DelayedLevelLoad(LevelInd, 2f));
     }
 
     public IEnumerator DelayedLevelLoad(int i, float t)
