@@ -78,9 +78,7 @@ public class Player : MonoBehaviour
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, highRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
-            {
-                Destroy(attackHit.transform.gameObject);
-            }
+                attackHit.transform.gameObject.GetComponent<Enemy>().EnemyHit();
         }
         else if (Input.GetButtonDown("Fire2"))
         {
@@ -92,10 +90,7 @@ public class Player : MonoBehaviour
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, midRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
-            {
-              Debug.Log("Hit Enemy");
-              Destroy(attackHit.transform.gameObject);
-            }
+                attackHit.transform.gameObject.GetComponent<Enemy>().EnemyHit();
         }
         else if (Input.GetButtonDown("Fire3"))
         {
@@ -107,15 +102,9 @@ public class Player : MonoBehaviour
             attackHit = Physics2D.Raycast(attackRay.origin, attackRay.direction, lowRange, enemyLayerMask);
             Debug.DrawRay(attackRay.origin,attackRay.direction,Color.yellow);
             if (attackHit)
-            {
-                Destroy(attackHit.transform.gameObject);
-            }
+                attackHit.transform.gameObject.GetComponent<Enemy>().EnemyHit();
         }
-
-
         CurrentPlayerState = PlayerState.Idle; //set player state back to idle 
-        
-        
     }
 
     public void PlayerGotHit()

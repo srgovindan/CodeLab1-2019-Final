@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
         switch (enemyType)
         {
             case '1'://low
-                enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Worm"));
+                enemy = ObjectPool.Pool.GetWorm();
                 if (Random.Range(0, 2) < 1) //random spawn on L or R side
                     enemy.transform.position = LowSpawnL.transform.position;
                 else
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case '2'://med
-                enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Skeleton"));
+                enemy = ObjectPool.Pool.GetSkeleton();
                 if (Random.Range(0, 2) < 1) //random spawn on L or R side
                     enemy.transform.position = MedSpawnL.transform.position;
                 else
